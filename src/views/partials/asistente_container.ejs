@@ -1,0 +1,292 @@
+<style>
+    /* Contenedor ajustado al tamaño de Horsito */
+    #asistente-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        /* Quitamos paddings excesivos para que el cristal no sea enorme */
+        padding: 0;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        /* Forma circular para que encaje con Horsito */
+
+        /* Efecto Líquido / Glassmorphism */
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(12px) saturate(140%);
+        -webkit-backdrop-filter: blur(12px) saturate(140%);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+        transform: scale(0.72);
+        opacity: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .assistant-hidden-anim {
+        transform: scale(0) !important;
+        opacity: 0 !important;
+        pointer-events: none;
+    }
+
+    #lottie-asistente {
+        width: 100%;
+        /* Ocupa el contenedor ajustado */
+        height: 100%;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    #lottie-asistente:hover {
+        transform: scale(1.02);
+    }
+
+    /* BURBUJA: Ahora posicionada respecto al borde del círculo */
+    .bubble {
+        position: absolute;
+        bottom: 300px;
+        right: 0;
+        width: 280px;
+        padding: 20px;
+        border-radius: 28px 28px 4px 28px;
+
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+    }
+
+    .bubble.hidden {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px) scale(0.9);
+    }
+
+    /* BOTÓN CERRAR: Pegado al borde superior del círculo */
+    #close-assistant {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: rgba(255, 95, 95, 0.85);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        cursor: pointer;
+        z-index: 1001;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+
+    #close-assistant:hover {
+        transform: scale(1.2);
+    }
+
+    /* BOTÓN RESCATE GLASS */
+    #btn-rescate-asistente {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        width: 60px;
+        height: 60px;
+        background: rgb(33, 47, 77);
+        backdrop-filter: blur(10px);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        cursor: pointer;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        z-index: 999;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform: scale(0);
+    }
+
+    #btn-rescate-asistente.show {
+        display: flex;
+        transform: scale(1);
+    }
+
+    /* BOTONES DE ACCIÓN */
+    .btn-main {
+        background: rgb(33, 47, 77);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 10px 20px;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .btn-secondary {
+        background: rgba(0, 0, 0, 0.08);
+        color: #222;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 12px;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+</style>
+<!-- LOTTIE -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.6/lottie.min.js"></script>
+
+
+<button id="btn-rescate-asistente" title="I need help" onclick="mostrarAsistente()">?</button>
+
+<div id="asistente-container">
+    <button id="close-assistant" title="Close Asistente" onclick="ocultarCompletamente()">&times;</button>
+
+    <div class="assistant-content">
+        <div id="asistente-bubble" class="bubble hidden">
+            <p id="asistente-text" style="color: black;">Hola! <b>Soy tu asistente virtual</b><br> Te puedo ayudar?</p>
+            <div class="bubble-actions">
+                <button class="btn-main" onclick="toggleBubble()">Cerrar chat</button>
+                <div class="mt-3">
+                    <input id="chatInput" type="text" placeholder="Pregúntame a cerca de tus productos..."
+                        class="w-full p-2 rounded bg-white text-black text-sm"
+                        onkeydown="if(event.key==='Enter') enviarMensaje()">
+                </div>
+            </div>
+        </div>
+        <div id="lottie-asistente" onclick="cambiarBot()"></div>
+    </div>
+</div>
+
+<script>
+
+    window.enviarMensaje = async function () {
+        const input = document.getElementById('chatInput');
+        const mensaje = input.value.trim();
+
+        if (!mensaje) return;
+
+        input.value = '';
+
+        const texto = document.getElementById('asistente-text');
+        texto.innerHTML = "Pensando... 🤖";
+
+        try {
+            const res = await fetch('/api/chatbot', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+
+                body: JSON.stringify({
+                    mensaje,
+                    fabrica_id: window.fabricaActiva
+                })
+            });
+
+            const data = await res.json();
+
+            texto.innerHTML = data.respuesta;
+
+        } catch (err) {
+            console.error(err);
+            texto.innerHTML = "Error al contactar con el asistente";
+        }
+    };
+    (function () {
+
+        // FUNCIÓN NUEVA PARA CAMBIAR EL BOT POR OTRO:
+        window.cambiarBot = function () {
+            console.log("Cambiando bot...");
+
+            // Primero destruimos la animación actual
+            if (window.horsitoAnimation) {
+                window.horsitoAnimation.destroy();
+            }
+
+            // Cargamos el NUEVO bot (reemplaza la ruta por tu otro JSON)
+            window.horsitoAnimation = lottie.loadAnimation({
+                container: document.getElementById('lottie-asistente'),
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                path: 'assets/lottie/horsito2.json' // <- tu nuevo bot JSON
+            });
+
+            // Opcional: abrir la burbuja o ejecutar algo más
+            toggleBubble();
+        };
+
+        //Almacenamos las instancias del contenedor y del botón
+        const container = document.getElementById('asistente-container'), btn_recate = document.getElementById('btn-rescate-asistente');
+
+        //Inicializamos la animación
+        if (!window.horsitoAnimation) {
+            window.horsitoAnimation = lottie.loadAnimation({
+                container: document.getElementById('lottie-asistente'),
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                path: '/assets/lottie/horsito.json'
+            });
+        }
+
+        /**
+         * Escuchador para mostrar u ocultar la burbuja
+         * */
+        window.toggleBubble = function () {
+            document.getElementById('asistente-bubble').classList.toggle('hidden');
+        };
+
+        /**
+         * Función para ocultar a Horsito
+         * */
+        window.ocultarCompletamente = function () {
+            container.classList.add('assistant-hidden-anim');
+            sessionStorage.setItem('assistant_status', 'hidden');
+
+            setTimeout(() => {
+                btn_recate.style.display = 'flex';
+                setTimeout(() => btn_recate.classList.add('show'), 10);
+            }, 300);
+        };
+
+        /**
+         * Escuchador para mostrar a Horsito
+         * */
+        window.mostrarAsistente = function () {
+            btn_recate.classList.remove('show');
+            sessionStorage.setItem('assistant_status', 'visible');
+
+            setTimeout(() => {
+                btn_recate.style.display = 'none';
+                container.classList.remove('assistant-hidden-anim');
+                setTimeout(toggleBubble, 500);
+            }, 300);
+        };
+
+
+
+        /**
+         * Escuchador para persistir el estado de Horsito
+         * */
+        document.addEventListener('DOMContentLoaded', () => {
+            const status = sessionStorage.getItem('assistant_status');
+            if (status === 'hidden') {
+                container.classList.add('assistant-hidden-anim');
+                btn_recate.style.display = 'flex';
+                btn_recate.classList.add('show');
+            }
+        });
+    })();
+</script>

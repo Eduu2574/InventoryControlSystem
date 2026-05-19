@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Expedir productos</title>
+
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- LÓGICA -->
+  <script src="/script/expedirProductos.js" defer></script>
+</head>
+
+<body class="bg-gray-900 text-gray-200 min-h-screen p-6">
+
+  <div class="max-w-7xl mx-auto">
+
+    <!-- HEADER -->
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold uppercase tracking-widest">
+        Expedición de productos
+      </h1>
+
+      <a href="/mainPage" class="px-4 py-2 bg-indigo-600 rounded hover:bg-indigo-700">
+        ← Volver
+      </a>
+    </div>
+
+    <!-- ✅ FILTROS -->
+    <div class="flex items-center gap-4 mb-6">
+
+      <div>
+        <label class="text-xs text-gray-400 block mb-1">Estado</label>
+        <select id="filtroEstado"
+          class="bg-gray-800 border border-gray-600 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500">
+          <option value="">Todos</option>
+          <option value="OPTIMO">Óptimos</option>
+          <option value="RIESGO">Riesgo</option>
+          <option value="CRITICO">Críticos</option>
+
+        </select>
+      </div>
+
+      <button onclick="aplicarFiltroEstado()"
+        class="mt-5 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded text-sm font-bold">
+        Filtrar
+      </button>
+
+      <button onclick="limpiarFiltroEstado()" class="mt-5 px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded text-sm">
+        Limpiar
+      </button>
+
+    </div>
+
+
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="bg-[#1a202c]/60 p-6 rounded-xl border border-[#4a6b8c]/30 shadow-lg">
+
+      <h2 class="text-lg font-bold uppercase tracking-widest text-blue-400 mb-4">
+        Selección de productos a expedir
+      </h2>
+      <p class="text-sm text-gray-400 mb-2">
+        Fábrica activa:
+        <span id="nombreFabrica" class="text-blue-400 font-bold"></span>
+      </p>
+
+      <!-- CABECERA -->
+      <div class="grid grid-cols-4 text-sm font-bold text-gray-400 mb-2 px-2">
+        <span class="text-center">✔</span>
+        <span class="text-center">Producto</span>
+        <span class="text-center">Stock actual</span>
+        <span class="text-center">Cantidad</span>
+      </div>
+
+      <!-- LISTA DINÁMICA -->
+      <div id="listaExpedicion" class="space-y-2"></div>
+
+      <!-- TOTAL + BOTONES -->
+      <div class="mt-6 flex justify-between items-center">
+
+        <span class="text-gray-400">
+          Total a expedir:
+          <span id="totalExpedicion" class="text-white font-bold text-lg ml-1">
+            0
+          </span>
+        </span>
+
+        <div class="flex gap-2">
+
+          <button onclick="window.location.href='/mainPage'" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded">
+            Cancelar
+          </button>
+
+          <button onclick="confirmarExpedicion()" class="px-4 py-2 bg-green-600 hover:bg-green-500 rounded font-bold">
+            Confirmar expedición
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

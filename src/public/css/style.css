@@ -1,0 +1,821 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- Estilos Base y Tipografía Mejorada --- */
+body {
+    /* Mantiene el fondo oscuro */
+    background-color: #1a202c;
+    color: white;
+    /* Fuente moderna y fallback seguro */
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    /* Suaviza las fuentes para una mejor legibilidad */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Aplicar un color de fondo para una sensación de profundidad en el contenedor principal si aplica */
+.container-main {
+    background-color: #2d3748;
+    /* Un tono un poco más claro que el body */
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Estilos para Inputs y Modales --- */
+/* Inputs y Selects dentro de Modales (mejor contraste visual) */
+#modal input,
+#modal select,
+#modalInformeFinal input,
+#modalInformeFinal select,
+#modalLarge input,
+#modalLarge select,
+#modalInforme input,
+#modalInforme select,
+#modalDetalle input,
+#modalDetalle select,
+#informe-detallado input,
+#informe-detallado select {
+    color: #1a202c !important;
+    /* Texto oscuro para contraste */
+    background-color: #ffffff;
+    border: 1px solid #a0a0a0;
+    border-radius: 6px;
+    padding: 8px 12px;
+    transition: all 0.3s ease-in-out;
+}
+
+#modal input:focus,
+#modal select:focus {
+    border-color: #4a6b8c;
+    /* Color de enfoque sutil */
+    box-shadow: 0 0 0 3px rgba(74, 107, 140, 0.5);
+    outline: none;
+}
+
+/* Labels dentro de Modales */
+#modal label,
+#modalInformeFinal label,
+#modalPlanta label,
+#modalLarge label,
+#modalInforme label,
+#modalDetalle label,
+#informe-detallado label {
+    color: #e2e8f0 !important;
+    /* Blanco suave */
+    font-weight: 600;
+}
+
+.modal-content {
+    color: white;
+    background-color: #2d3748;
+    /* Fondo del modal oscuro */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+    animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    /* Animación de apertura */
+}
+
+#modalInforme {
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Fondo más oscuro para el overlay */
+    backdrop-filter: blur(5px);
+    /* Efecto de desenfoque moderno */
+}
+
+/* Keyframe para animación de escala con bounce */
+@keyframes scaleIn {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* --- Estilos de Navegación y Logo con Animación Mejorada --- */
+.navbar-logo {
+    max-width: 120px;
+    margin-right: 20px;
+    transition: transform 0.4s ease-out, box-shadow 0.4s ease-out, filter 0.4s ease-out;
+}
+
+/* Efecto hover: escalado, sombra y filtro sutil */
+header:hover .navbar-logo {
+    transform: scale(1.1) rotate(2deg);
+    /* Menos rotación para un look más profesional */
+    box-shadow: 0 6px 25px rgba(74, 107, 140, 0.4);
+    /* Sombra con el color de acento */
+    filter: brightness(1.1) drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+}
+
+/* --- Estilos de Botones (resaltados) --- */
+/* Resaltado de elementos importantes */
+.resaltado {
+    background-color: #3f4a5c !important;
+    /* Un gris azulado más profundo */
+    border: 2px solid #5a667b !important;
+    border-radius: 8px;
+    padding: 8px;
+    transition: all 0.3s ease-in-out;
+    animation: fadeInFromLeft 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Estilo para los botones importantes (color de acento) */
+.resaltadoBotones {
+    background-color: #4a6b8c !important;
+    /* Color de acento principal */
+    color: white;
+    border: 2px solid #6c93b3 !important;
+    box-shadow: 0 4px 10px rgba(74, 107, 140, 0.4);
+    transition: all 0.3s ease-in-out;
+    animation: fadeInFromLeft 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.resaltadoBotones:hover {
+    background-color: #5c83a8 !important;
+    /* Un tono más claro al hacer hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(74, 107, 140, 0.6);
+}
+
+/* Botón flotante de Restaurar Puesto (más moderno) */
+#botonRestaurarPuesto {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #4a6b8c;
+    /* Color de acento */
+    color: #ffffff;
+    padding: 15px 25px;
+    font-size: 16px;
+    border: none;
+    border-radius: 30px;
+    /* Completamente redondo/ovalado */
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(74, 107, 140, 0.5);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 1000;
+}
+
+#botonRestaurarPuesto:hover {
+    background-color: #5c83a8;
+    transform: scale(1.1) rotate(1deg);
+    /* Ligero bounce y rotación */
+    box-shadow: 0 8px 20px rgba(74, 107, 140, 0.7);
+}
+
+
+/* --- Estilos de Tabla Mejorados --- */
+.min-w-full {
+    width: 100%;
+    border-collapse: separate;
+    /* Permite border-spacing */
+    border-spacing: 0 5px;
+    /* Espacio entre filas */
+    border-radius: 8px;
+    overflow: hidden;
+    /* Asegura que los bordes redondeados se apliquen */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Fondo para el contenedor de la tabla (no las celdas) */
+.min-w-full.bg-white {
+    background-color: #f9f9f9;
+    color: #000000;
+}
+
+/* Estilo para las cabeceras */
+.min-w-full th {
+    background-color: #3f4a5c;
+    /* Color más oscuro y profesional */
+    color: #ffffff;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border: none;
+    position: sticky;
+    /* Sticky headers for better UX */
+    top: 0;
+    z-index: 10;
+}
+
+/* Estilo para las celdas de la tabla */
+.min-w-full td {
+    background-color: #ffffff;
+    padding: 10px 15px;
+    text-align: left;
+    color: #1a202c;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Efecto Zebra (tono sutil) */
+.min-w-full tr:nth-child(even) td {
+    background-color: #f5f5f5;
+}
+
+/* Efecto hover sobre filas (resaltado suave) */
+.min-w-full tr:hover td {
+    background-color: #e0eaf3;
+    /* Un azul muy claro en el hover */
+    transform: scale(1.005);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+/* Estilo para los iconos de la tabla */
+.min-w-full i {
+    color: #4a6b8c;
+    /* Color de acento para los iconos */
+    transition: color 0.3s ease;
+}
+
+/* --- Estilos de Gráficos y Contenedores --- */
+.chart-container {
+    /* Mantener dimensiones, pero añadir estilo */
+    width: 100%;
+    max-height: 400px;
+}
+
+.graficos-container {
+    gap: 20px;
+}
+
+.contenedor-grafico {
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #2d3748;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease-in-out;
+    border: 1px solid #4a5568;
+}
+
+.contenedor-grafico:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(74, 107, 140, 0.3);
+    /* Sombra de acento en hover */
+}
+
+/* Contenedor de Gráfico de Puesto */
+.contenedor-grafico.puesto {
+    flex: 0 1 calc(33.333% - 20px);
+    /* Ajuste basado en el gap */
+    max-width: calc(33.333% - 20px);
+    aspect-ratio: 1 / 1;
+    /* Para gráficos que son cuadrados, como un donut o pie chart */
+}
+
+#modal-grafico-container {
+    background-color: #1a202c;
+    /* Más oscuro para el contenedor del gráfico en el modal */
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6);
+    /* Sombra interior */
+}
+
+#modal-grafico-container h4 {
+    color: #e2e8f0;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+#iconoGrande {
+    font-size: 4rem;
+    /* Icono más grande y notable */
+    color: #4a6b8c;
+    text-shadow: 0 0 10px rgba(74, 107, 140, 0.5);
+}
+
+/* --- Estilos de Botones de Categorías (Tags/Fichas) --- */
+.categoria-boton {
+    background-color: #4a5568;
+    border: 1px solid #4a5568;
+    border-radius: 20px;
+    /* Más redondeado (tipo "pill") */
+    padding: 8px 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-right: 10px;
+    /* Separación más clara */
+}
+
+.categoria-boton:hover {
+    background-color: #5c83a8;
+    /* Color de acento al pasar el ratón */
+    border-color: #5c83a8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.categoria-contenedor {
+    background-color: #1f2937;
+    /* Fondo más oscuro para el scroll de categorías */
+    border-radius: 10px;
+    padding: 10px 0;
+    /* Padding vertical, no horizontal (ya lo tiene el botón) */
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4);
+    /* Estilo para la barra de desplazamiento */
+    scrollbar-width: thin;
+    /* Firefox */
+    scrollbar-color: #4a6b8c #1a202c;
+    /* Firefox */
+}
+
+/* Estilo de scrollbar para WebKit (Chrome, Safari) */
+.categoria-contenedor::-webkit-scrollbar {
+    height: 6px;
+}
+
+.categoria-contenedor::-webkit-scrollbar-thumb {
+    background-color: #4a6b8c;
+    border-radius: 10px;
+}
+
+.categoria-contenedor::-webkit-scrollbar-track {
+    background: #1a202c;
+}
+
+/* --- Dropdown Estilizado --- */
+.dropdown-toggle {
+    background-color: #4a6b8c;
+    /* Color de acento */
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.dropdown-toggle:hover {
+    background-color: #5c83a8;
+    transform: translateY(-1px);
+}
+
+.dropdown-menu {
+    background-color: #2d3748;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    padding: 5px 0;
+    border: 1px solid #4a5568;
+}
+
+.dropdown-item {
+    color: #e2e8f0;
+    transition: background-color 0.3s ease, padding-left 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #3f4a5c;
+    padding-left: 1.5rem;
+    /* Efecto de deslizamiento sutil */
+}
+
+/* --- Animaciones (Mejoradas con curvas más dinámicas) --- */
+
+/* Keyframe para el fadeIn: Se mantiene igual, es simple y funcional */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Keyframe para slideInUp (más dinámico) */
+@keyframes slideInUp {
+    0% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.animate-slideInUp {
+    animation: slideInUp 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Keyframe para slideInLeft (más dinámico) */
+@keyframes slideInLeft {
+    0% {
+        transform: translateX(-100px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.animate-slideInLeft {
+    animation: slideInLeft 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Keyframe para fadeInFromLeft (Se mantiene bien para resaltar) */
+@keyframes fadeInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Animación para ocultar el <li> (Mejorado) */
+.ocultarElemento {
+    animation: fadeOut 0.4s ease-out forwards, slideOutDown 0.4s ease-out forwards;
+}
+
+/* Animación para restaurar el <li> (Mejorado) */
+.restaurarElemento {
+    animation: fadeIn 0.4s ease-in forwards, slideInUpSmall 0.4s ease-in forwards;
+}
+
+/* Keyframe para deslizar hacia abajo (ocultar) */
+@keyframes slideOutDown {
+    0% {
+        transform: translateY(0);
+        max-height: 100px;
+        padding: 10px;
+    }
+
+    100% {
+        transform: translateY(50px);
+        max-height: 0;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}
+
+/* Keyframe para deslizar hacia arriba (restaurar) */
+@keyframes slideInUpSmall {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Retrasos de animación */
+.animate-delay-200 {
+    animation-delay: 0.2s;
+}
+
+.animate-delay-400 {
+    animation-delay: 0.4s;
+}
+
+/* --- Leyenda de Gráficos --- */
+.item_leyenda {
+    margin-bottom: 8px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: #3f4a5c;
+    transition: background-color 0.3s ease;
+}
+
+.item_leyenda:hover {
+    background-color: #4a5568;
+}
+
+.color_leyenda {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+/* --- Media Queries (Ajustados para los nuevos estilos) --- */
+@media (max-width: 768px) {
+    .contenedor-grafico.puesto {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+
+    .min-w-full th,
+    .min-w-full td {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+    }
+
+    #botonRestaurarPuesto {
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 15px;
+        font-size: 12px;
+    }
+}
+
+/* --- Estilos para el Panel Lateral Colapsable --- */
+/* Esta transición es clave para el efecto de colapso/expansión */
+#panelLateral {
+    height: 100vh;
+    min-height: 100vh;
+
+    position: sticky;
+    top: 0;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    transition: all 0.4s ease-in-out;
+
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 transparent;
+}
+
+#panelLateral.opacity-0 {
+    opacity: 0;
+}
+
+#panelLateral.invisible {
+    visibility: hidden;
+}
+#panelLateral::-webkit-scrollbar {
+    width: 6px;
+}
+
+#panelLateral::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 20px;
+}
+#panelLateral {
+    transition: all 0.4s ease-in-out;
+    /* Las propiedades min-width y max-width se controlan con JS */
+}
+
+/* Para ocultar el contenido interno durante la transición */
+#panelLateral.opacity-0 {
+    opacity: 0;
+}
+
+#panelLateral.invisible {
+    visibility: hidden;
+}
+
+/* Para el botón fijo de Toggle */
+#togglePanelBtn {
+    transition: left 0.4s ease-in-out, background-color 0.3s ease;
+    z-index: 50;
+    /* Asegura que esté por encima de todo */
+}
+
+/* --- Personalización de SweetAlert2 --- */
+
+/* Contenedor principal de la alerta */
+.swal2-popup {
+    background-color: #2d3748 !important;
+    /* Tu color de contenedor-main */
+    color: white !important;
+    border-radius: 15px !important;
+    border: 1px solid #4a5568 !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7) !important;
+    font-family: 'Inter', sans-serif !important;
+}
+
+/* Título de la alerta */
+.swal2-title {
+    color: #e2e8f0 !important;
+    font-weight: 700 !important;
+}
+
+/* Texto de la alerta */
+.swal2-html-container {
+    color: #cbd5e0 !important;
+}
+
+/* Botón de Confirmación (Estilo ResaltadoBotones) */
+.swal2-confirm {
+    background-color: #4a6b8c !important;
+    /* Tu color de acento */
+    border-radius: 8px !important;
+    padding: 10px 25px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 10px rgba(74, 107, 140, 0.4) !important;
+    transition: all 0.3s ease !important;
+}
+
+.swal2-confirm:hover {
+    background-color: #5c83a8 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(74, 107, 140, 0.6) !important;
+}
+
+/* Botón de Cancelar */
+.swal2-cancel {
+    background-color: #4a5568 !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Iconos (Éxito, Error, etc.) */
+.swal2-icon.swal2-success {
+    border-color: #4a6b8c !important;
+}
+
+.swal2-icon.swal2-success [class^='swal2-success-line'] {
+    background-color: #4a6b8c !important;
+}
+
+.swal2-icon.swal2-success .swal2-success-ring {
+    border: .25em solid rgba(74, 107, 140, .3) !important;
+}
+
+/* Fondo oscuro detrás de la alerta (Overlay) */
+.swal2-backdrop-show {
+    background: rgba(0, 0, 0, 0.7) !important;
+    backdrop-filter: blur(4px) !important;
+    /* Efecto blur como en tus modales */
+}
+
+@keyframes parpadeoBorrador {
+    0% {
+        background-color: #111827;
+    }
+
+    /* Color original */
+    50% {
+        background-color: #374151;
+    }
+
+    /* Color intermedio (un gris más claro) */
+    100% {
+        background-color: #111827;
+    }
+
+    /* Volver al original */
+}
+
+/* Clase que aplicaremos con JS */
+.modo-borrador-activo {
+    animation: parpadeoBorrador 2s infinite;
+    /* Se repite infinitamente cada 2 segundos */
+    border-right: 4px solid #6d6d6d;
+    /* Añadimos un borde amarillo tipo 'alerta' */
+}
+
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Definición de la animación */
+@keyframes fadeInDownCustom {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+        filter: blur(5px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+/* La clase que activará la animación */
+.animate-fade-in-down {
+    animation: fadeInDownCustom 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Oculta el marco superior de Google Translate */
+.goog-te-banner-frame.skiptranslate,
+.goog-te-gadget-icon {
+    display: none !important;
+}
+
+body {
+    top: 0px !important;
+}
+
+/* Estiliza el selector de idiomas para que encaje con el modo oscuro */
+.goog-te-gadget-simple {
+    background-color: transparent !important;
+    border: none !important;
+    font-family: inherit !important;
+}
+
+.goog-te-gadget-simple span {
+    color: #e2e8f0 !important;
+    /* slate-200 */
+    font-weight: 500;
+}
+
+/* Oculta el logo de Google */
+.goog-te-gadget img {
+    display: none !important;
+}
+
+/* Estilo para los selects dentro del contenedor de filtros */
+.custom-select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 20px !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 10px;
+}
+
+/* Forzamos el color negro en las opciones desplegadas */
+#filtro-container select option {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+    font-weight: 500;
+    padding: 10px;
+}
+
+/* Estilo para navegadores que no permiten estilizar options directamente */
+#filtro-container select:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* MOSTRAR NOTIFICACIONES */
+.toast {
+  padding: 10px 15px;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  animation: fadeIn 0.3s ease;
+}
+
+.toast-error {
+  background: #dc2626;
+}
+
+.toast-warning {
+  background: #eab308;
+  color: black;
+}
+
+.toast-ok {
+  background: #22c55e;
+}
+
+/* Animación de pulso suave */
+.pulse-soft {
+  animation: pulseSoft 2s infinite;
+}
+
+@keyframes pulseSoft {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; transform: translateX(100%); }
+}
+
+/* Animación para que parezca que la campana se mueve al existir notificaciones */
+.shake {
+  animation: shakeBell 1.6s;
+}
+
+@keyframes shakeBell {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px) rotate(-5deg); }
+  50% { transform: translateX(4px) rotate(5deg); }
+  75% { transform: translateX(-4px) rotate(-5deg); }
+  100% { transform: translateX(0); }
+}

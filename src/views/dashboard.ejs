@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Control System (ICS) </title>
+    <!-- CAMBIAR EL ICONO DE ARRIBA -->
+
+    <link rel="icon" type="image/x-icon" href="/assets/logo.png">
+    <script src="/script/mainPage/film.js" defer></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Incluimos la cabecera -->
+    <%- include('partials/head.ejs') %>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="/script/mainPage/film.js" defer></script>
+        <script src="/script/productos.js" defer></script>
+</head>
+
+<body class="bg-gray-900 min-h-screen flex flex-col">    <div class="flex flex-1 min-h-0">
+        <!-- Panel izquierdo -->
+        <aside id="panelLateral"
+            class="bg-[#212f4d] text-white p-4 shadow-2xl flex flex-col items-center space-y-4 animate-slideInLeft border-r border-[#ffffff10]"
+            style="width: 320px; min-width: 320px; top: 0; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #4a6b8c transparent;">
+
+            <div id="contenedorInformacionUsuario"
+                class="w-full flex items-center space-x-3 p-3 bg-[#1a202c]/60 border border-[#4a5568] rounded-xl shadow-inner">
+                <div class="relative">
+                    <!--
+                                <img id="foto_perfil" src="\assets\film\logo.png"
+                                    onerror="https://ui-avatars.com/api/?name=User+Name&background=4a6b8c&color=fff"
+                                    class="h-10 w-10 rounded-full border-2 border-[#4a6b8c]" alt="User">
+                                    -->
+                    <span
+                        class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#1a202c] rounded-full"></span>
+                </div>
+                <div class="overflow-hidden">
+                    <p>Bienvenido <span id="nombre_usuario">Cargando...</span></p>
+                    <p id="nombre_email">Cargando...</p>
+                    <!-- aquí se inyecta el email -->
+                    </p>
+                </div>
+            </div>
+            <div id="contenedorReloj"
+                class="w-full flex flex-col p-3 bg-[#1a202c]/60 border border-[#4a5568] rounded-xl shadow-inner">
+
+                <!-- HORA -->
+                <span id="hora" class="text-2xl font-bold text-white-400 font-mono align-self-center tracking-wide">
+                    --:--:--
+                </span>
+
+                <!-- FECHA -->
+                <span id="fecha" class="text-xs text-gray-400 tracking-wide">
+                    Cargando fecha...
+                </span>
+            </div>
+
+
+            <button id="botonFabrica"
+                class="flex flex-col items-center justify-center w-full bg-[#2d3748] hover:bg-[#4a6b8c] text-white rounded-xl border border-[#4a5568]/50 shadow-md transition-all duration-300 group py-3 px-4">
+
+                <span class="block text-[9px] uppercase text-gray-400 font-bold group-hover:text-gray-200">
+                    Planta actualmente activa:
+                </span>
+
+                <span id="nombreFabricaBtn"
+                    class="text-xs font-bold uppercase tracking-wide text-blue-400 group-hover:text-white">
+                    Cargando...
+                </span>
+
+            </button>
+
+            <!-- ✅ SELECT SEPARADO -->
+            <select id="selectorFabrica" onchange="cambiarFabrica()"
+                class="bg-gray-800 text-white p-2 rounded mt-2 w-full hidden">
+                <option value="1">Fabrica Motores</option>
+                <option value="2">Fabrica Electrónica</option>
+                <option value="3">Fabrica PowerTrain Assembly</option>
+            </select>
+
+            <div class="grid grid-cols-1 gap-2 w-full">
+                <button id="visualizarInformeSaturacion" onclick="window.location.href='/reporte-saturacion'"
+                    class="flex items-center w-full bg-[#1a202c]/40 hover:bg-[#4a6b8c] text-[12px] font-medium py-2.5 px-4 rounded-lg border border-[#4a5568]/30 transition-all duration-200">
+                    <i class="bi bi-bar-chart-line mr-3 text-[#4a6b8c]"></i>
+                    UET Reporte Saturación
+                </button>
+
+                <button id="btnPDF"
+                    class="flex items-center w-full bg-[#1a202c]/40 hover:bg-[#4a6b8c] text-[12px] font-medium py-2.5 px-4 rounded-lg border border-[#4a5568]/30 transition-all duration-200"
+                    onclick="generarInforme()">
+                    <i class="bi bi-file-earmark-pdf mr-3 text-red-400"></i>
+                    <span>Generar Informe PDF</span>
+                </button>
+            </div>
+
+            <div id="visualizarLeyenda"
+                class="w-full bg-[#1a202c]/30 p-3 rounded-xl border border-[#4a5568]/20 space-y-2">
+                <p class="text-[14px] uppercase font-bold text-gray-500 text-center tracking-widest">Leyenda estado
+                    stock</p>
+                <div class="grid grid-cols-1 gap-1.5">
+                    <div
+                        class="item_leyenda flex items-center text-[12px] bg-[#1f2937]/50 p-2 rounded-md border border-white/5">
+                        <div
+                            class="color_leyenda bg-green-500 !w-2.5 !h-2.5 rounded-full mr-3 shadow-[0_0_8px_rgba(34,197,94,0.4)]">
+                        </div>
+                        <span class="text-gray-300 italic">Stock Óptimo</span>
+                    </div>
+                    <div
+                        class="item_leyenda flex items-center text-[12px] bg-[#1f2937]/50 p-2 rounded-md border border-white/5">
+                        <div
+                            class="color_leyenda bg-yellow-500 !w-2.5 !h-2.5 rounded-full mr-3 shadow-[0_0_8px_rgba(234,179,8,0.4)]">
+                        </div>
+                        <span class="text-gray-300 italic">Stock en Riesgo Alto</span>
+                    </div>
+                    <div
+                        class="item_leyenda flex items-center text-[12px] bg-[#1f2937]/50 p-2 rounded-md border border-white/5">
+                        <div
+                            class="color_leyenda bg-red-500 !w-2.5 !h-2.5 rounded-full mr-3 shadow-[0_0_8px_rgba(239,68,68,0.4)]">
+                        </div>
+                        <span class="text-gray-300 italic">Stock en Riesgo Crítico</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full pt-2">
+                <button id="botonHistorialMovimientos" style="display: block;"
+                    onclick="window.location.href='/historial-movimientos'"
+                    class="resaltadoBotones w-full py-2.5 mt-2 text-[10px] font-bold uppercase bg-indigo-600">
+                    <i class="bi bi-person-workspace mr-1"></i> HISTORIAL MOVIMIENTOS
+                </button>
+
+                <div class="flex gap-2 mt-2">
+                    <button id="crearProductoBtn"
+                        class="resaltadoBotones !bg-[#1a202c] flex-1 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-tight border border-[#4a5568]">
+                        <i class="bi bi-plus-lg mr-1"></i> CREAR PRODUCTO
+                    </button>
+
+                    <button onclick="opcionSeguridad()"
+                        class="resaltadoBotones !bg-[#1a202c] flex-1 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-tight border border-[#4a5568]">
+                        <i class="bi bi-shield-lock mr-1"></i> SEGURIDAD
+                    </button>
+                </div>
+
+                <button onclick="window.location.href='/expedir-productos'"
+                    class="resaltadoBotones w-full py-2.5 mt-2 text-[10px] font-bold uppercase bg-indigo-600"><i
+                        class="bi bi-box-arrow-up-right mr-1"></i> EXPEDIR PRODUCTOS
+                </button>
+
+            </div>
+            <div class="w-full pt-2">
+                <button id="botonCerrarSesion" style="display: block;" onclick="cerrarSesion()"
+                    class="resaltadoBotones w-full py-2.5 mt-2 text-[10px] font-bold uppercase bg-indigo-600">
+                    <a href="/" aria-label="Go to homepage" class="transition-transform hover:scale-110">
+
+                        <i class="bi bi-box-arrow-right mr-1"></i> Cerrar sesión
+                </button>
+            </div>
+        </aside>
+
+        <!-- Contenido principal -->
+        <div class="flex-1 flex flex-col bg-gray-950 text-gray-200">
+
+            <header
+                class="bg-gray-900/60 backdrop-blur-xl shadow-2xl p-5 rounded-2xl max-w-5xl mx-auto flex items-center mt-6 mb-8 w-[95%] border border-white/5 relative z-10 transition-transform duration-500 hover:scale-[1.01]">
+                <a href="/" aria-label="Go to homepage" class="transition-transform hover:scale-110">
+                    <img src="/assets/icono2.png" alt="HORSE logo"
+                        class="navbar-logo h-10 w-auto mr-8 filter brightness-110">
+                </a>
+                <div class="flex flex-col">
+                    <h1 id="tituloApp"
+                        class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-blue-500 tracking-tight transition-all duration-500">
+                        INVENTORY CONTROL SYSTEM
+                    </h1>
+                    <span class="text-[10px] uppercase tracking-[0.3em] text-blue-400/80 font-bold ml-1">Real‑Time Stock Monitoring & Control</span>
+                </div>
+                <!-- CAMPANA NOTIFICACIONES -->
+                <div class="relative ml-auto">
+                    <button id="bellBtn" class="text-white text-2xl relative">
+                        🔔
+                        <span id="badgeCount"
+                            class="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-1.5 rounded-full hidden">
+                        </span>
+                    </button>
+
+                    <!-- PANEL -->
+                    <div id="notificationPanel"
+                        class="hidden absolute right-0 mt-2 w-80 max-h-96 overflow-y-auto bg-gray-800 rounded-lg shadow-xl p-3 z-50">
+                    </div>
+                </div>
+
+            </header>
+            </main>
+<main id="panelSuperior" class="flex-1 min-h-0 p-6 pt-0 flex flex-col space-y-6 overflow-y-auto">
+                <section class="contenedor-grafico w-full animate-slideInUp animate-delay-200" role="region"
+                    aria-label="Main visualization area">
+                    <h2 class="text-xl font-bold mb-4 text-white border-b border-[#4a5568] pb-2 w-full">Inventario en tiempo real</h2>
+                    <div id="resumenStock" class="grid grid-cols-4 gap-4 mb-6">
+
+                        <div class="bg-red-600/20 border border-red-500 rounded-xl p-4 text-center pulse-soft">
+                            <p class="text-sm text-gray-300">Críticos</p>
+                            <p id="totalCriticos" class="text-2xl font-bold text-red-400">0</p>
+                        </div>
+
+                        <div class="bg-yellow-600/20 border border-yellow-500 rounded-xl p-4 text-center pulse-soft">
+                            <p class="text-sm text-gray-300">En riesgo</p>
+                            <p id="totalRiesgo" class="text-2xl font-bold text-yellow-400">0</p>
+                        </div>
+
+                        <div class="bg-green-600/20 border border-green-500 rounded-xl p-4 text-center pulse-soft">
+                            <p class="text-sm text-gray-300">Óptimos</p>
+                            <p id="totalOptimos" class="text-2xl font-bold text-green-400">0</p>
+                        </div>
+
+                        <div class="bg-blue-600/20 border border-blue-500 rounded-xl p-4 text-center pulse-soft">
+                            <p class="text-sm text-gray-300">Total</p>
+                            <p id="totalProductos" class="text-2xl font-bold text-blue-400">0</p>
+                        </div>
+                    </div>
+
+                    <!-- CONTENEDOR DE PRODUCTOS -->
+                    <section class="mt-8 bg-[#1a202c]/60 p-6 rounded-xl border border-[#4a6b8c]/30 shadow-lg">
+                        <h2 class="text-lg font-bold uppercase tracking-widest text-blue-400 mb-4">
+                            Análisis de stock
+                        </h2>
+                        <canvas id="graficoStock" height="100"></canvas>
+
+                        <!-- ✅ 2. RECOMENDACIONES (AQUÍ) -->
+                        <div class="bg-gray-800 border border-gray-700 rounded-xl p-4 mb-6">
+                            <h3>Recomendaciones</h3>
+                            <p id="recomendacionTexto">Cargando...</p>
+                        </div>
+                    </section>
+                    <section class="mt-8 bg-[#1a202c]/60 p-6 rounded-xl border border-[#4a6b8c]/30 shadow-lg">
+                        <h2 class="text-lg font-bold uppercase tracking-widest text-blue-400 mb-4">
+                            Lista control detallada de productos:
+                        </h2>
+                        <div class="mb-4 flex justify-end items-center gap-2">
+                            <p class="mb-0">Ordenar por:</p>
+                            <select id="ordenProductos"
+                                class="bg-gray-700 text-white p-2 rounded border border-gray-600 text-sm"
+                                onchange="ordenarProductos()">
+                                <option value="nombre-asc">Nombre (A → Z)</option>
+                                <option value="nombre-desc">Nombre (Z → A)</option>
+                                <option value="stock-desc">Mayor stock primero</option>
+                                <option value="stock-asc">Menor stock primero</option>
+                            </select>
+                        </div>
+
+                        <div id="listaProductos" class="space-y-4">
+                            <p class="text-gray-400">Cargando productos...</p>
+                        </div>
+
+                    </section>
+        </div>
+        </section>
+
+        </main>
+
+    </div>
+    </div>
+    <div id="modalProducto" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+        <div class="bg-gray-800 p-6 rounded-lg w-full max-w-md">
+
+            <h2 class="text-xl font-bold mb-4">Crear producto</h2>
+
+            <form id="formProducto" class="space-y-3">
+
+                <input id="nombre" class="w-full p-2 rounded bg-gray-700" placeholder="Nombre" required>
+
+                <textarea id="descripcion" class="w-full p-2 rounded bg-gray-700" placeholder="Descripción"></textarea>
+
+                <input id="stock" type="number" class="w-full p-2 rounded bg-gray-700" placeholder="Stock" required>
+
+                <input id="securityStock" type="number" class="w-full p-2 rounded bg-gray-700"
+                    placeholder="Stock seguridad (mínimo)"></input>
+
+                <div class="flex justify-end gap-2">
+                    <button type="button" id="cerrarModal" class="px-3 py-1 bg-red-600 rounded">
+                        Cancelar
+                    </button>
+
+                    <button type="submit" class="px-3 py-1 bg-green-600 rounded">
+                        Crear
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+    <!-- MODAL EDITAR PRODUCTO -->
+    <div id="modalEditarProducto" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+
+        <div class="bg-gray-800 p-6 rounded-lg w-full max-w-md">
+
+            <h2 class="text-xl font-bold mb-4">Editar producto</h2>
+
+            <form id="formEditarProducto" class="space-y-3">
+
+                <!-- id oculto -->
+                <input type="hidden" id="edit_id">
+
+                <input id="edit_nombre" class="w-full p-2 rounded bg-gray-700" placeholder="Nombre" required>
+
+                <textarea id="edit_descripcion" class="w-full p-2 rounded bg-gray-700"
+                    placeholder="Descripción"></textarea>
+
+                <input id="edit_stock" type="number" class="w-full p-2 rounded bg-gray-700" placeholder="Stock actual">
+                <input id="edit_stock_minimo" type="number" class="w-full p-2 rounded bg-gray-700"
+                    placeholder="Stock mínimo (opcional)">
+
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="cerrarModalEdicion()" class="px-3 py-1 bg-red-600 rounded">
+                        Cancelar
+                    </button>
+
+                    <button type="submit" class="px-3 py-1 bg-blue-600 rounded">
+                        Guardar
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL HISTORIAL -->
+    <!-- ✅ MODAL HISTORIAL MOVIMIENTOS -->
+    <div id="modalHistorial" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+
+        <div class="bg-gray-800 p-6 rounded-lg w-full max-w-4xl max-h-[80vh] overflow-y-auto">
+
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">Historial de movimientos</h2>
+
+                <button onclick="cerrarModalHistorial()" class="px-3 py-1 bg-red-600 rounded">
+                    Cerrar
+                </button>
+            </div>
+
+            <table class="w-full text-sm border border-gray-700 rounded overflow-hidden">
+                <thead class="bg-gray-900 text-gray-300">
+                    <tr>
+                        <th class="p-2 text-left">Fecha</th>
+                        <th class="p-2 text-left">Tipo</th>
+                        <th class="p-2 text-right">Cantidad</th>
+                        <th class="p-2 text-right">Stock anterior</th>
+                        <th class="p-2 text-right">Stock nuevo</th>
+                        <th class="p-2 text-left">Usuario</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaHistorial" class="divide-y divide-gray-700">
+                    <!-- filas dinámicas -->
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <!-- HORSITO -->
+
+
+    <%- include("partials/asistente_container") %>
+
+        <!-- GENERAR INFORME PDF -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+        <footer class="mt-auto bg-gray-900 text-gray-400 text-xs py-4 text-center border-t border-gray-800">
+            <span class="font-semibold text-gray-300">Inventory Control System (ICS)</span> ·
+            Developed by <span class="text-blue-400">Eduardo Domínguez‑Toribio</span> © 2026
+            <br>
+            <a href="https://github.com/eduu2574" target="_blank" class="text-blue-400 hover:underline">
+                Vísita mi página de Github
+            </a>
+        </footer>
+</body>
+</html>

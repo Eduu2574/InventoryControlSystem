@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Historial de movimientos</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/script/historialMovimientos.js" defer></script>
+</head>
+
+<body class="bg-gray-900 text-gray-200 min-h-screen p-6">
+
+  <div class="max-w-7xl mx-auto">
+
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold uppercase tracking-widest">
+        Historial global de movimientos
+      </h1>
+
+      <a href="/mainPage" class="px-4 py-2 bg-indigo-600 rounded hover:bg-indigo-700">
+        ← Volver
+      </a>
+    </div>
+
+    <!-- ✅ FILTROS POR FECHA -->
+    <div class="flex items-center gap-4 mb-4">
+      <div>
+        <label class="text-xs text-gray-400 block mb-1">Desde</label>
+        <input type="date" id="filtroDesde" class="bg-gray-800 border border-gray-600 rounded px-2 py-1 text-sm" />
+      </div>
+
+      <div>
+        <label class="text-xs text-gray-400 block mb-1">Hasta</label>
+        <input type="date" id="filtroHasta" class="bg-gray-800 border border-gray-600 rounded px-2 py-1 text-sm" />
+      </div>
+
+      <button onclick="aplicarFiltroFechas()"
+        class="mt-5 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded text-sm font-bold">
+        Filtrar
+      </button>
+
+      <button onclick="limpiarFiltroFechas()" class="mt-5 px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded text-sm">
+        Limpiar
+      </button>
+
+      <!-- ✅ FILTRO POR TIPO DE MOVIMIENTO -->
+      <div>
+        <label class="text-xs text-gray-400 block mb-1">Tipo</label>
+        <select id="filtroTipo" class="bg-gray-800 border border-gray-600 rounded px-2 py-1 text-sm">
+          <option value="">Todos</option>
+          <option value="INCREMENTO">Incremento</option>
+          <option value="DECREMENTO">Decremento</option>
+          <option value="AJUSTE_MANUAL">Ajuste manual</option>
+          <option value="ELIMINADO">Producto eliminado</option>
+        </select>
+      </div>
+
+    </div>
+
+    <p class="text-sm text-gray-400 mb-2">
+      Fábrica activa:
+      <span id="nombreFabrica" class="text-blue-400 font-bold"></span>
+    </p>
+    <div class="mb-4 text-sm text-gray-400">
+      Vista de auditoría de todos los cambios de stock
+    </div>
+
+    <div class="overflow-x-auto border border-gray-700 rounded-xl">
+      <table class="w-full text-sm">
+        <thead class="bg-gray-800 text-gray-300">
+          <tr>
+            <th class="p-2 text-left">Fecha</th>
+            <th class="p-2 text-left">Producto</th>
+            <th class="p-2 text-left">Tipo</th>
+            <th class="p-2 text-right">Cantidad</th>
+            <th class="p-2 text-right">Antes</th>
+            <th class="p-2 text-right">Después</th>
+            <th class="p-2 text-left">Usuario</th>
+          </tr>
+        </thead>
+
+        <tbody id="tablaHistorialGlobal" class="divide-y divide-gray-700">
+          <tr>
+            <td colspan="7" class="p-4 text-center text-gray-400">
+              Cargando movimientos...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</body>
+</html>

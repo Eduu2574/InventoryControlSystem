@@ -1,0 +1,23 @@
+async function cambiarStock(id, cambio) {
+  try {
+    const res = await fetch(`/api/productos/${id}/stock`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ cambio })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      mostrarNotificacion(data.error || 'Error modificando stock');
+      return;
+    }
+
+    alertados.clear();
+    cargarProductos();
+
+  } catch (err) {
+    console.error(err);
+  }
+}

@@ -1,0 +1,16 @@
+# Node
+node_modules/
+npm-debug.log
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Variables de entorno
+.env
+
+# Claves / credenciales (MUY IMPORTANTE)
+src/routes/engagement/config/keys/*.json
+
+# Archivos raros de Windows
+*_Zone.Identifier

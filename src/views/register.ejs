@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro de usuario</title>
+
+  <%- include('partials/head.ejs') %>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="flex flex-col min-h-screen bg-gray-900 text-white"> <!--INCLUIMOS EL MODAL-->
+  <div class="flex-1 flex items-center justify-center">
+
+    <div class="w-full max-w-md bg-gray-800 rounded-xl shadow-xl p-8">
+      <h1 class="text-2xl font-bold text-center mb-6">
+        Registro de usuario
+      </h1>
+
+      <form id="formRegistro" class="space-y-4">
+
+        <div>
+          <label class="block text-sm font-medium mb-1">Nombre de usuario</label>
+          <input id="reg_username" type="text" required
+            class="w-full px-3 py-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-1">Email</label>
+          <input id="reg_email" type="email" required placeholder="ejemplo@gmail.com"
+            class="w-full px-3 py-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-1">Contraseña</label>
+          <input id="reg_password" type="password" minlength="6" required
+            class="w-full px-3 py-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+
+        <button onclick="console.log('CLICK FUNCIONA')">Crear cuenta</button>
+
+      </form>
+      <p class="text-center text-sm text-gray-400 mt-6">
+        ¿Ya tienes cuenta?
+        <a href="/" class="text-blue-400 hover:underline">
+          Inicia sesión
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('formRegistro').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('reg_username').value;
+      const email = document.getElementById('reg_email').value;
+      const password = document.getElementById('reg_password').value;
+
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: username, email, password })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert('✅ Usuario registrado correctamente');
+        window.location.href = '/';
+      } else {
+        alert(data.message || 'Error al registrar usuario');
+      }
+    });
+  </script>
+  <footer class="mt-auto bg-gray-900 text-gray-400 text-xs py-4 text-center border-t border-gray-800">
+    <span class="font-semibold text-gray-300">Inventory Control System (ICS)</span> ·
+    Developed by <span class="text-blue-400">Eduardo Domínguez‑Toribio</span> © 2026
+    <br>
+    <a href="https://github.com/eduu2574" target="_blank" class="text-blue-400 hover:underline">
+      Vísita mi página de Github
+    </a>
+  </footer>
+</body>
+
+</html>
