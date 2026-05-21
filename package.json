@@ -1,196 +1,117 @@
 {
-  
-
-
-
+  
+
 "name": "logistics_stock_engagement",
-  
-
-
-
+  
+
 "description": "",
-  
-
-
-
+  
+
 "main": "app.js",
-  
-
-
-
+  
+
 "type": "module",
-  
-
-
-
+  
+
 "scripts": {
-  
-
-
-
-  
-
-
-
+  
+
+  
+
 "dev": "node --no-deprecation app.js",
-  
-
-
-
-  
-
-
-
+  
+
+  
+
 "build:css": "tailwindcss build src/public/css/style.css -o src/public/css/tailwind.css"
-  
-
-
-
+  
+
 },
-  
-
-
-
+  
+
 "dependencies": {
-  
-
-
-
-  
-
-
-
+  
+
+  
+
 "@google-cloud/storage": "^7.19.0",
-  
-
-
-
-  
-
-
-
+  
+
+  
+
 "bcrypt": "^6.0.0",
-  
-
-
-
-  
-
-
-
+  
+
+  
+
 "bcryptjs": "^3.0.3",
-  
-
-
-
-  
-
-
-
+  
+
+  
+
 "cookie-parser": "^1.4.7",
-  
-
-
-
-  
-
-
-
+  
+
+  
+
 "dotenv": "^16.6.1",
-  
-
-
-
-  
-
-
-
+  
+
+  
+
 "ejs": "^5.0.1",
-  
-
-
-
-  
-
-
-
+  
+
+  
+
 "express": "^5.2.1",
-  
-
-
-
-  
-
-
-
+  
+
+  
+
 "json2csv": "^6.0.0-alpha.2",
-  
-
-
-
-  
-
-
-
+  
+
+  
+
 "jsonwebtoken": "^9.0.3",
-  
-
-
-
-  
-
-
-
+  
+
+  
+
 "mysql": "^2.18.1",
-  
-
-
-
-  
-
-
-
-"mysql2": "^3.22.3"
-  
-
-
-
+  
+
+  
+
+"mysql2": "^3.22.3",
+  
+
+  
+
+"pg": "^8.21.0"
+  
+
 },
-  
-
-
-
+  
+
 "devDependencies": {
-  
-
-
-
-  
-
-
-
+  
+
+  
+
 "autoprefixer": "^10.4.27",
-  
-
-
-
-  
-
-
-
+  
+
+  
+
 "postcss": "^8.5.8",
-  
-
-
-
-  
-
-
-
+  
+
+  
+
 "tailwindcss": "^4.2.2"
-  
-
-
-
+  
+
 }
 }

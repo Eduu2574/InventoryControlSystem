@@ -1,28 +1,22 @@
-import { db } from '../db.js';
+import pool from '../../../../db.js';
 
-export const obtenerProductos = (fabricaId) => {
-  return new Promise((resolve, reject) => {
-
+export const obtenerProductos = async (fabricaId) => {
+  try {
     let sql = 'SELECT * FROM productos WHERE activo = 1';
-    let params = [];
+    const params = [];
 
     if (fabricaId) {
-      sql += ' AND fabrica_id = ?';
+      sql += ' AND fabrica_id = $1';
       params.push(fabricaId);
     }
 
-    db.query(sql, params, (err, rows) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(rows);
-      }
-    });
+    const result = await pool.query(sql, params);
+    return result.rows;
 
-  });
+  } catch (err) {
+    throw err;
+  }
 };
-
-
 
 export default {
   obtenerProductos

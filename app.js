@@ -1,7 +1,7 @@
-import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import cookieParser from 'cookie-parser';
+
 import routerStock from './src/routes/engagement/routerStock.js';
 import productosRoutes from './src/routes/engagement/routes/productos.routes.js';
 import userRoutes from './src/routes/engagement/routes/user.routes.js';
@@ -11,31 +11,31 @@ import chatbotRoutes from './src/routes/engagement/routes/chatbot.routes.js';
 import fabricasRoutes from './src/routes/engagement/routes/fabricas.routes.js';
 
 import dotenv from 'dotenv';
-
 dotenv.config();
+
+import express from 'express';
+import pool from './db.js'; // ✅ nuevo
+
 
 const app = express();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const PORT = process.env.APP_PORT || 4000;
 
+const PORT = process.env.PORT || 4000; // ✅ importante
 
-// ✅ 1. PARSERS (ANTES DE LAS RUTAS)
+// ✅ PARSERS
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-// LO AÑADO NUEVO 28/4 SE PUEDE BORRAR?
-//app.use(express.static('public'));
 
-// ✅ 2. VISTAS
+// ✅ VISTAS
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src', 'views'));
 
-// ✅ 3. ESTÁTICOS
+// ✅ ESTÁTICOS
 app.use(express.static(path.join(__dirname, 'src', 'public')));
 
-// ✅ 4. ROUTERS (DESPUÉS DE LOS PARSERS)
+// ✅ ROUTES
 app.use('/', routerStock);
-console.log("APP.JS CARGADO");
 app.use('/api', productosRoutes);
 app.use('/api', userRoutes);
 app.use('/api', authRoutes);
@@ -43,8 +43,18 @@ app.use('/api/security', securityRoutes);
 app.use('/api', chatbotRoutes);
 app.use('/api', fabricasRoutes);
 
-// ✅ 5. SERVIDOR
+// ✅ TEST DB
+app.get('/db-test', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT NOW()');
+    res.json(result.rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// ✅ SERVER
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
-  
+  console.log("DATABASE_URL:", process.env.DATABASE_URL);
 });

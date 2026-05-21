@@ -3,25 +3,16 @@ import 'dotenv/config';
 import fs from 'fs';
 import path from 'path';
 import { Parser } from 'json2csv';
-import { db } from '../db.js';
+import pool from '../../../../db.js';
 import { subirArchivoLocal } from '../bucket.js';
 
 const router = express.Router();
 
-/* ✅ FUNCIÓN AUXILIAR PARA MYSQL */
-function queryAsync(sql, params = []) {
-  return new Promise((resolve, reject) => {
-    db.query(sql, params, (err, results) => {
-      if (err) reject(err);
-      else resolve(results);
-    });
-  });
-}
-
 router.post('/backup', async (req, res) => {
   try {
-    // ✅ AHORA SÍ: consulta correcta
-    const productos = await queryAsync('SELECT * FROM productos');
+    // ✅ Consulta directa
+    const result = await pool.query('SELECT * FROM productos');
+    const productos = result.rows;
 
     if (!productos || productos.length === 0) {
       return res.status(400).json({ error: 'No hay datos para exportar' });
@@ -44,7 +35,7 @@ router.post('/backup', async (req, res) => {
 
     console.log('✅ CSV subido a GCP:', destino);
 
-    // ✅ Responder al frontend
+    // ✅ Respuesta
     res.json({
       ok: true,
       mensaje: 'Backup de seguridad generado correctamente',
