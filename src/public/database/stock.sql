@@ -86,7 +86,7 @@ CREATE TABLE productos (
     descripcion VARCHAR(255),
     stock_actual INT DEFAULT 0,
     stock_minimo INT DEFAULT 10,
-    activo TINYINT(1) DEFAULT 1
+    activo TINYINT(1) DEFAULT TRUE
 ) ENGINE=InnoDB;
 
 -- =========================

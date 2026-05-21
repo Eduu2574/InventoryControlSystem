@@ -359,7 +359,7 @@ CREATE TABLE `productos` (
   `descripcion` varchar(255) DEFAULT NULL,
   `stock_actual` int(11) DEFAULT 0,
   `stock_minimo` int(11) DEFAULT 10,
-  `activo` tinyint(1) DEFAULT 1,
+  `activo` tinyint(1) DEFAULT TRUE,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

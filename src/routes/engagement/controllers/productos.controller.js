@@ -21,7 +21,7 @@ export const getProductos = async (req, res) => {
 ====================================================== */
 export async function obtenerProductosDB() {
   const result = await pool.query(
-    'SELECT * FROM productos WHERE activo = 1'
+    'SELECT * FROM productos WHERE activo = TRUE'
   );
   return result.rows;
 }
