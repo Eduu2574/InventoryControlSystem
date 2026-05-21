@@ -204,7 +204,7 @@ export async function eliminarProducto(req, res) {
     const stockAnterior = result.rows[0].stock_actual;
 
     await pool.query(
-      'UPDATE productos SET activo = 0 WHERE id = $1',
+      'UPDATE productos SET activo = false WHERE id = $1',
       [id]
     );
 
