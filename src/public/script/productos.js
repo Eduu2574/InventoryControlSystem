@@ -531,27 +531,32 @@ async function generarPDF() {
       console.warn("No se pudo obtener fábrica", e);
     }
 
-    const logoDataUrl = await loadImageAsDataURL('assets/stock2.png').catch(() => null);
+    const logoDataUrl = await loadImageAsDataURL('assets/icono.png').catch(() => null);
 
     const azul = [30, 64, 175];
 
     // ✅ CABECERA
+    // 🧾 CABECERA CON ESTILO PRO
     if (logoDataUrl) {
-      doc.addImage(logoDataUrl, 'PNG', 10, 8, 35, 20);
 
-      doc.setFontSize(18);
-      doc.text('INFORME ACTUAL DE STOCK', 50, 16);
 
-    } else {
-      doc.setFontSize(22);
-      doc.text('INFORME ACTUAL DE STOCK', 14, 20);
+// LOGO (más alto y con margen)
+doc.addImage(logoDataUrl, 'PNG', 10, 8, 28, 28);
     }
 
-    // ✅ INFO EXTRA (YA CORRECTA)
-    doc.setFontSize(11);
-    doc.text(`Ubicación: ${nombreFabrica}`, 14, 35);
-    doc.text(`Informe generado por: ${usuarioInforme}`, 14, 42);
-    doc.text(`Fecha: ${new Date().toLocaleString()}`, 14, 49);
+// TÍTULO
+doc.setFont('helvetica', 'bold');
+doc.setFontSize(20);
+doc.text('INFORME ACTUAL', 105, 18, { align: 'center' });
+
+// TEXTO (⬅️ BAJAMOS ESTO)
+doc.setFont('helvetica', 'normal');
+doc.setFontSize(11);
+
+doc.text(`Ubicación: ${nombreFabrica}`, 14, 45);
+doc.text(`Informe generado por: ${usuarioInforme}`, 14, 52);
+doc.text(`Fecha: ${new Date().toLocaleString()}`, 14, 59);
+
 
     // 📊 TABLA
     const body = productos.map(p => {
@@ -569,7 +574,7 @@ async function generarPDF() {
     });
 
     doc.autoTable({
-      startY: 52,
+      startY: 64,
       head: [[
         'NOMBRE',
         'DESCRIPCIÓN',
