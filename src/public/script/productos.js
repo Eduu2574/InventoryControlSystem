@@ -490,34 +490,73 @@ async function generarPDF() {
   const doc = new jsPDF();
 
   try {
+    // ✅ PRODUCTOS
     const response = await fetch(`/api/productos?fabrica=${window.fabricaActiva}`, {
       credentials: 'include'
     });
 
     if (!response.ok) throw new Error('Error cargando productos');
-
     const productos = await response.json();
+
+    // ✅ USUARIO REAL (igual que en tu app)
+    let usuarioInforme = "Desconocido";
+
+    try {
+      const resUser = await fetch('/api/me', {
+        credentials: 'include'
+      });
+
+      if (resUser.ok) {
+        const user = await resUser.json();
+        usuarioInforme = user.username || "Usuario";
+      }
+    } catch (e) {
+      console.warn("No se pudo obtener usuario", e);
+    }
+
+    // ✅ FABRICA CON NOMBRE
+    let nombreFabrica = `Fábrica ${window.fabricaActiva}`;
+
+    try {
+      const resFab = await fetch('/api/fabricas', {
+        credentials: 'include'
+      });
+
+      if (resFab.ok) {
+        const fabricas = await resFab.json();
+        const fabrica = fabricas.find(f => f.id === window.fabricaActiva);
+        if (fabrica) nombreFabrica = fabrica.nombre;
+      }
+    } catch (e) {
+      console.warn("No se pudo obtener fábrica", e);
+    }
 
     const logoDataUrl = await loadImageAsDataURL('assets/stock2.png').catch(() => null);
 
+    const azul = [30, 64, 175];
+
+    // ✅ CABECERA
     if (logoDataUrl) {
-      doc.addImage(logoDataUrl, 'PNG', 0, 0, 68, 38);
-      doc.text('Listado de Productos', 52, 18);
-      doc.text(`Fecha: ${new Date().toLocaleString()}`, 52, 26);
+      doc.addImage(logoDataUrl, 'PNG', 10, 8, 35, 20);
+
+      doc.setFontSize(18);
+      doc.text('INFORME ACTUAL DE STOCK', 50, 16);
 
     } else {
-      doc.setFontSize(28);
-      doc.text('Listado de Productos', 14, 20);
-      doc.setFontSize(18);
-      doc.text(`Fecha: ${new Date().toLocaleString()}`, 14, 27);
-
+      doc.setFontSize(22);
+      doc.text('INFORME ACTUAL DE STOCK', 14, 20);
     }
 
+    // ✅ INFO EXTRA (YA CORRECTA)
+    doc.setFontSize(11);
+    doc.text(`Ubicación: ${nombreFabrica}`, 14, 35);
+    doc.text(`Informe generado por: ${usuarioInforme}`, 14, 42);
+    doc.text(`Fecha: ${new Date().toLocaleString()}`, 14, 49);
 
     // 📊 TABLA
     const body = productos.map(p => {
       let estado = 'OK';
-      if (p.stock_actual <= p.stock_minimo) estado = 'CRÍTICO';
+      if (p.stock_actual <= p.stock_minimo) estado = 'CRITICO';
       else if (p.stock_actual <= p.stock_minimo * 1.5) estado = 'BAJO';
 
       return [
@@ -530,38 +569,58 @@ async function generarPDF() {
     });
 
     doc.autoTable({
-      startY: 35,
+      startY: 52,
       head: [[
         'NOMBRE',
         'DESCRIPCIÓN',
         'STOCK ACTUAL',
         'STOCK MÍNIMO',
-        'ESTADO STOCK'
+        'ESTADO'
       ]],
       body,
+
       styles: {
-        fontSize: 9
+        fontSize: 9,
+        cellPadding: 3
       },
+
       headStyles: {
-        fillColor: [30, 64, 175] // azul
+        fillColor: azul,
+        textColor: 255
       },
+
+      alternateRowStyles: {
+        fillColor: [245, 245, 245]
+      },
+
+      columnStyles: {
+        2: { halign: 'center' },
+        3: { halign: 'center' },
+        4: { halign: 'center', fontStyle: 'bold' }
+      },
+
       didParseCell: function (data) {
         if (data.section === 'body' && data.column.index === 4) {
-          if (data.cell.text[0] === 'OK') {
-            data.cell.styles.textColor = [0, 128, 0];
+
+          const estado = data.cell.text[0];
+
+          if (estado === 'OK') {
+            data.cell.styles.textColor = [34, 197, 94];
           }
-          if (data.cell.text[0] === 'CRÍTICO') {
+
+          if (estado === 'CRITICO') {
             data.cell.styles.textColor = [220, 38, 38];
           }
-          if (data.cell.text[0] === 'BAJO') {
-            data.cell.styles.textColor = [202, 138, 4];
+
+          if (estado === 'BAJO') {
+            data.cell.styles.textColor = [234, 179, 8];
           }
         }
       }
     });
 
-    // 💾 GUARDAR
-    doc.save(`productos_${new Date().toISOString().slice(0, 10)}.pdf`);
+    // ✅ GUARDAR
+    doc.save(`informe_stock_${new Date().toISOString().slice(0, 10)}.pdf`);
 
   } catch (err) {
     console.error(err);
