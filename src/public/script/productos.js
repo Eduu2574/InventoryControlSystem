@@ -547,7 +547,7 @@ doc.addImage(logoDataUrl, 'PNG', 10, 8, 28, 28);
 // TÍTULO
 doc.setFont('helvetica', 'bold');
 doc.setFontSize(20);
-doc.text('INFORME ACTUAL', 105, 18, { align: 'center' });
+doc.text('INFORME ACTUAL STOCK', 105, 18, { align: 'center' });
 
 // TEXTO (⬅️ BAJAMOS ESTO)
 doc.setFont('helvetica', 'normal');
