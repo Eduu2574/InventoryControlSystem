@@ -29,7 +29,7 @@ router.get('/reporte-saturacion', verifyToken, (req, res) => {
 router.get('/expedir-productos', verifyToken, (req, res) => {
   res.render('expedirProductos');
 });
-
+  
 // Auth
 router.post('/login', login);
 router.post('/register', register);
